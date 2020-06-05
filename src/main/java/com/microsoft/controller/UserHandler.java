@@ -95,16 +95,7 @@ public class UserHandler {
             HttpSession session = request.getSession();
             // 获取验证码的正确答案
             String sourceCode = (String) session.getAttribute(RandomValidateCode.RANDOMCODEKEY);
-            // 去除大小写敏感问题
-            sourceCode.toUpperCase();
-            String backCode = checkcode.toUpperCase();
-            if(foundUser!=null && foundUser.getPassword().equals(user.getPassword()) && sourceCode.equals(backCode)){
-                modelAndView.addObject("user",foundUser);
-                modelAndView.setViewName("welcome");
-            }else{
-                View view = new InternalResourceView("/login.jsp");
-                modelAndView.setView(view);
-            }
+            userService.loginCheck(user,foundUser,checkcode,sourceCode,modelAndView);
         }
         return modelAndView;
     }
